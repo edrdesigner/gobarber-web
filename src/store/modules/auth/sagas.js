@@ -17,7 +17,11 @@ export function* signIn({ payload }) {
       toast.error('Usuario nao é prestador ');
       return;
     }
+
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+
     yield put(signInSucess(token, user));
+
     history.push('/dashboard');
   } catch (err) {
     toast.error('Falha na autenticação, verifique seus dados.');
@@ -42,7 +46,18 @@ export function* signUp({ payload }) {
   }
 }
 
+export function setToken({ payload }) {
+  if (!payload) return;
+
+  const { token } = payload.auth;
+
+  if (token) {
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+  }
+}
+
 export default all([
+  takeLatest('persist/REHYDRATE', setToken),
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
   takeLatest('@auth/SIGN_UP_REQUEST', signUp),
 ]);
