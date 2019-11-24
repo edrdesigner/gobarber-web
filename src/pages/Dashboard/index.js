@@ -10,7 +10,6 @@ import {
   isBefore,
   isEqual,
   parseISO,
-  isAfter,
   startOfHour,
 } from 'date-fns';
 import pt from 'date-fns/locale/pt';
